@@ -14,6 +14,15 @@ namespace Clouds.Net.AWS.Helpers
         private readonly TransferUtility _transferUtility;
         private readonly string _bucketName;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="S3Helper"/> class with AWS credentials, bucket name, region, and optional LocalStack configuration.
+        /// </summary>
+        /// <param name="bucketName">The name of the S3 bucket.</param>
+        /// <param name="accessKey">The AWS access key.</param>
+        /// <param name="secretKey">The AWS secret key.</param>
+        /// <param name="region">The AWS region where the S3 bucket is located.</param>
+        /// <param name="useLocalStack">Indicates whether to use LocalStack for S3 operations. Defaults to <c>false</c>.</param>
+        /// <param name="localStackUrl">The URL of the LocalStack service (required if <paramref name="useLocalStack"/> is <c>true</c>).</param>
         public S3Helper(
             string bucketName,
             string accessKey,
@@ -39,6 +48,13 @@ namespace Clouds.Net.AWS.Helpers
             _transferUtility = new TransferUtility(_client);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="S3Helper"/> class with AWS credentials and bucket name, using the default AWS region and optional LocalStack configuration.
+        /// </summary>
+        /// <param name="bucketName">The name of the S3 bucket.</param>
+        /// <param name="accessKey">The AWS access key.</param>
+        /// <param name="secretKey">The AWS secret key.</param>
+        /// <param name="useLocalStack">Indicates whether to use LocalStack for S3 operations. Defaults to <c>false</c>.</param>
         public S3Helper(
             string bucketName,
             string accessKey,

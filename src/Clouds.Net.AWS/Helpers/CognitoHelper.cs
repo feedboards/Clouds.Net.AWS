@@ -16,6 +16,14 @@ namespace Clouds.Net.AWS.Helpers
         private readonly string _clientSecret;
         private readonly string _userPoolId;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CognitoHelper"/> class with AWS credentials, Cognito client details, and user pool ID, using the default AWS region.
+        /// </summary>
+        /// <param name="clientId">The Cognito application client ID.</param>
+        /// <param name="clientSecret">The Cognito application client secret.</param>
+        /// <param name="userPoolId">The Cognito user pool ID.</param>
+        /// <param name="accessKey">The AWS access key.</param>
+        /// <param name="secretKey">The AWS secret key.</param>
         public CognitoHelper(
             string clientId,
             string clientSecret,
@@ -32,6 +40,15 @@ namespace Clouds.Net.AWS.Helpers
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CognitoHelper"/> class with AWS credentials, Cognito client details, user pool ID, and a specified AWS region.
+        /// </summary>
+        /// <param name="clientId">The Cognito application client ID.</param>
+        /// <param name="clientSecret">The Cognito application client secret.</param>
+        /// <param name="userPoolId">The Cognito user pool ID.</param>
+        /// <param name="accessKey">The AWS access key.</param>
+        /// <param name="secretKey">The AWS secret key.</param>
+        /// <param name="region">The AWS region where the Cognito user pool is located.</param>
         public CognitoHelper(
             string clientId,
             string clientSecret,

@@ -11,6 +11,13 @@ namespace Clouds.Net.AWS.Helpers
         private readonly AmazonSQSClient _client;
         private readonly string _queueUrl;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SQSHelper"/> class with specified AWS credentials, region, and queue URL.
+        /// </summary>
+        /// <param name="accessKey">The AWS access key.</param>
+        /// <param name="secretKey">The AWS secret key.</param>
+        /// <param name="region">The AWS region where the SQS queue is located.</param>
+        /// <param name="queueUrl">The URL of the SQS queue.</param>
         public SQSHelper(
             string accessKey,
             string secretKey,
@@ -25,6 +32,12 @@ namespace Clouds.Net.AWS.Helpers
             _queueUrl = queueUrl;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SQSHelper"/> class with specified AWS credentials and queue URL, using the default AWS region.
+        /// </summary>
+        /// <param name="accessKey">The AWS access key.</param>
+        /// <param name="secretKey">The AWS secret key.</param>
+        /// <param name="queueUrl">The URL of the SQS queue.</param>
         public SQSHelper(
             string accessKey,
             string secretKey,
