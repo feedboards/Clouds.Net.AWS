@@ -78,9 +78,27 @@
 
 ## Amazon SQS
 
-- `WaitForNewMessages<T>()`: Asynchronously waits for and retrieves new messages of type T from the default queue.
-- `WaitForNewMessages<T>(string queueUrl)`: Asynchronously waits for and retrieves new messages of type T from a specified queue URL.
-- `WaitForNewMessages<T>(int waitTimeSeconds)`
+- `WaitForNewMessages<T>()`: Asynchronously waits for and retrieves new messages of type `T` from the default queue.
+- `WaitForNewMessages<T>(string queueUrl)`: Asynchronously waits for and retrieves new messages of type `T` from a specified queue URL.
+- `WaitForNewMessages<T>(int waitTimeSeconds)`: Asynchronously waits for and retrieves new messages of type `T` from the default queue with a specified wait time.
+- `WaitForNewMessages<T>(int waitTimeSeconds, string queueUrl)`: Asynchronously waits for and retrieves multiple new messages of type `T` from the specified queue with a specified wait time.
+
+- `WaitForNewMessage<T>()`: Asynchronously waits for and retrieves a single new message of type `T` from the default queue.
+- `WaitForNewMessage<T>(string queueUrl)`: Asynchronously waits for and retrieves a single new message of type `T` from the specified queue URL.
+- `WaitForNewMessage<T>(int waitTimeSeconds)`: Asynchronously waits for and retrieves a single new message of type `T` from the default queue with a specified wait time.
+- `WaitForNewMessage<T>(int waitTimeSeconds, string queueUrl)`: Asynchronously waits for and retrieves a single new message of type `T` from the specified queue with a specified wait time.
+
+- `DeleteMessages(List<Message> messages)`: Asynchronously deletes a list of messages from the default queue.
+- `DeleteMessages(List<Message> messages, string queueUrl)`: Asynchronously deletes a list of messages from the specified queue.
+
+- `DeleteMessage(Message message)`: Asynchronously deletes a single message from the default queue.
+- `DeleteMessage(Message message, string queueUrl)`: Asynchronously deletes a single message from the specified queue.
+
+- `AddNewMessages<T>(List<T> messages)`: Asynchronously adds multiple new messages of type `T` to the default queue.
+- `AddNewMessages<T>(List<T> messages, string queueUrl)`: Asynchronously adds multiple new messages of type `T` to the specified queue.
+
+- `AddNewMessage<T>(T message)`: Asynchronously adds a new message of type `T` to the default queue.
+- `AddNewMessage<T>(T message, string queueUrl)`: Asynchronously adds a new message of type `T` to the specified queue.
 
 # How to add and configure `Clouds.Net.AWS` to the project
 
