@@ -10,20 +10,20 @@
 
 ## Amazon S3
 
-- `Exists(string s3Key)`: Checks if an S3 object exists using its key.
-- `Exists(string bucketName, string s3Key)`: Checks if an S3 object exists in a specified bucket using its key.
+- `Exists(string s3Key)`: Asynchronously checks if an object exists in the S3 bucket using the specified key.
+- `Exists(string bucketName, string s3Key)`: Asynchronously checks if an object exists in the specified S3 bucket using the provided key.
 
-- `DownloadAsync(string path, string s3Key)`: Asynchronously downloads an S3 object to a local file using its key.
+- `DownloadAsync(string path, string s3Key)`: Asynchronously downloads an S3 object to a local file.
 - `DownloadAsync(string bucketName, string path, string s3Key)`: Asynchronously downloads an S3 object from a specified bucket to a local file.
 
 - `DeleteAsync(string s3Key)`: Asynchronously deletes an S3 object using its key.
 - `DeleteAsync(string bucketName, string s3Key)`: Asynchronously deletes an S3 object from a specified bucket.
 
-- `UploadOrUpdateAsPublicToReadAsync(string path, string s3Key)`: Asynchronously uploads or updates a local file to S3, setting it as public-read.
-- `UploadOrUpdateAsPublicToReadAsync(string bucketName, string path, string s3Key)`: Asynchronously uploads or updates a local file to a specified bucket on S3, setting it as public-read.
+- `UploadOrUpdateAsPublicToReadAsync(string path, string s3Key)`: Asynchronously uploads or updates a local file to S3 with public read access.
+- `UploadOrUpdateAsPublicToReadAsync(string bucketName, string path, string s3Key)`: Asynchronously uploads or updates a local file to a specified bucket on S3 with public read access.
 
-- `UploadOrUpdateAsPublicToReadAsync(Stream stream, string s3Key)`: Asynchronously uploads or updates a stream to S3, setting it as public-read.
-- `UploadOrUpdateAsPublicToReadAsync(string bucketName, Stream stream, string s3Key)`: Asynchronously uploads or updates a stream to a specified bucket on S3, setting it as public-read.
+- `UploadOrUpdateAsPublicToReadAsync(Stream stream, string s3Key)`: Asynchronously uploads or updates a stream to S3 with public read access.
+- `UploadOrUpdateAsPublicToReadAsync(string bucketName, Stream stream, string s3Key)`: Asynchronously uploads or updates a stream to a specified bucket on S3 with public read access.
 
 - `UploadOrUpdateAsync(string path, string s3Key)`: Asynchronously uploads or updates a local file to S3.
 - `UploadOrUpdateAsync(string bucketName, string path, string s3Key)`: Asynchronously uploads or updates a local file to a specified bucket on S3.
@@ -35,16 +35,16 @@
 - `GetObjectsV2(string bucketName)`: Asynchronously retrieves a list of all S3 objects in a specified bucket.
 
 - `GetObject(string s3Key)`: Asynchronously retrieves an S3 object using its key.
-- `GetObject(string bucketName, string s3Key)`: Asynchronously retrieves an S3 object from a specified bucket.
+- `GetObject(string bucketName, string s3Key)`: Asynchronously retrieves an S3 object from a specified bucket using its key.
 
 - `GetObjectUrlPublicFile(string region, string s3Key)`: Retrieves the public URL of an S3 object in a specified region.
-- `GetObjectUrlPublicFile(string bucketName, string region, string s3Key)`: Retrieves the public URL of an S3 object from a specified bucket in a region.
+- `GetObjectUrlPublicFile(string bucketName, string region, string s3Key)`: Retrieves the public URL of an S3 object in a specified region.
 
-- `GetObjectUrlByDefaultUTC(string s3Key)`: Retrieves the URL of an S3 object with a default UTC timestamp.
-- `GetObjectUrlByDefaultUTC(string bucketName, string s3Key)`: Retrieves the URL of an S3 object from a specified bucket with a default UTC timestamp.
+- `GetObjectUrlByDefaultUTC(string s3Key)`: Retrieves a pre-signed URL for an S3 object with a default expiration time of 3 hours from UTC now.
+- `GetObjectUrlByDefaultUTC(string bucketName, string s3Key)`: Retrieves a pre-signed URL for an S3 object with a default expiration time of 3 hours from UTC now.
 
-- `GetObjectUrlByDefaultNow(string s3Key)`: Retrieves the URL of an S3 object with the current time as default.
-- `GetObjectUrlByDefaultNow(string bucketName, string s3Key)`: Retrieves the URL of an S3 object from a specified bucket with the current time as default.
+- `GetObjectUrlByDefaultNow(string s3Key)`: Retrieves a pre-signed URL for an S3 object with a default expiration time of 3 hours from now
+- `GetObjectUrlByDefaultNow(string bucketName, string s3Key)`: Retrieves a pre-signed URL for an S3 object with a default expiration time of 3 hours from now.
 
 - `GetObjectUrlByUTC(string s3Key, TimeSpan expires)`: Retrieves the URL of an S3 object that expires after a specified duration from UTC now.
 - `GetObjectUrlByUTC(string bucketName, string s3Key, TimeSpan expires)`: Retrieves the URL of an S3 object from a specified bucket that expires after a specified duration from UTC now.
@@ -78,9 +78,27 @@
 
 ## Amazon SQS
 
-- `WaitForNewMessages<T>()`: Asynchronously waits for and retrieves new messages of type T from the default queue.
-- `WaitForNewMessages<T>(string queueUrl)`: Asynchronously waits for and retrieves new messages of type T from a specified queue URL.
-- `WaitForNewMessages<T>(int waitTimeSeconds)`
+- `WaitForNewMessages<T>()`: Asynchronously waits for and retrieves new messages of type `T` from the default queue.
+- `WaitForNewMessages<T>(string queueUrl)`: Asynchronously waits for and retrieves new messages of type `T` from a specified queue URL.
+- `WaitForNewMessages<T>(int waitTimeSeconds)`: Asynchronously waits for and retrieves new messages of type `T` from the default queue with a specified wait time.
+- `WaitForNewMessages<T>(int waitTimeSeconds, string queueUrl)`: Asynchronously waits for and retrieves multiple new messages of type `T` from the specified queue with a specified wait time.
+
+- `WaitForNewMessage<T>()`: Asynchronously waits for and retrieves a single new message of type `T` from the default queue.
+- `WaitForNewMessage<T>(string queueUrl)`: Asynchronously waits for and retrieves a single new message of type `T` from the specified queue URL.
+- `WaitForNewMessage<T>(int waitTimeSeconds)`: Asynchronously waits for and retrieves a single new message of type `T` from the default queue with a specified wait time.
+- `WaitForNewMessage<T>(int waitTimeSeconds, string queueUrl)`: Asynchronously waits for and retrieves a single new message of type `T` from the specified queue with a specified wait time.
+
+- `DeleteMessages(List<Message> messages)`: Asynchronously deletes a list of messages from the default queue.
+- `DeleteMessages(List<Message> messages, string queueUrl)`: Asynchronously deletes a list of messages from the specified queue.
+
+- `DeleteMessage(Message message)`: Asynchronously deletes a single message from the default queue.
+- `DeleteMessage(Message message, string queueUrl)`: Asynchronously deletes a single message from the specified queue.
+
+- `AddNewMessages<T>(List<T> messages)`: Asynchronously adds multiple new messages of type `T` to the default queue.
+- `AddNewMessages<T>(List<T> messages, string queueUrl)`: Asynchronously adds multiple new messages of type `T` to the specified queue.
+
+- `AddNewMessage<T>(T message)`: Asynchronously adds a new message of type `T` to the default queue.
+- `AddNewMessage<T>(T message, string queueUrl)`: Asynchronously adds a new message of type `T` to the specified queue.
 
 # How to add and configure `Clouds.Net.AWS` to the project
 

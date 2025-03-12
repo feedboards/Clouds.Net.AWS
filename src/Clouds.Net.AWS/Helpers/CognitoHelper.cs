@@ -16,6 +16,14 @@ namespace Clouds.Net.AWS.Helpers
         private readonly string _clientSecret;
         private readonly string _userPoolId;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CognitoHelper"/> class with AWS credentials, Cognito client details, and user pool ID, using the default AWS region.
+        /// </summary>
+        /// <param name="clientId">The Cognito application client ID.</param>
+        /// <param name="clientSecret">The Cognito application client secret.</param>
+        /// <param name="userPoolId">The Cognito user pool ID.</param>
+        /// <param name="accessKey">The AWS access key.</param>
+        /// <param name="secretKey">The AWS secret key.</param>
         public CognitoHelper(
             string clientId,
             string clientSecret,
@@ -32,6 +40,15 @@ namespace Clouds.Net.AWS.Helpers
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CognitoHelper"/> class with AWS credentials, Cognito client details, user pool ID, and a specified AWS region.
+        /// </summary>
+        /// <param name="clientId">The Cognito application client ID.</param>
+        /// <param name="clientSecret">The Cognito application client secret.</param>
+        /// <param name="userPoolId">The Cognito user pool ID.</param>
+        /// <param name="accessKey">The AWS access key.</param>
+        /// <param name="secretKey">The AWS secret key.</param>
+        /// <param name="region">The AWS region where the Cognito user pool is located.</param>
         public CognitoHelper(
             string clientId,
             string clientSecret,
@@ -52,6 +69,11 @@ namespace Clouds.Net.AWS.Helpers
                     AWSUtils.GetRegionFromString(region));
         }
 
+        /// <summary>
+        /// Asynchronously retrieves a user's information using their access token.
+        /// </summary>
+        /// <param name="accessToken">The access token of the user.</param>
+        /// <returns>A task that represents the asynchronous operation and returns the user's information.</returns>
         public async Task<AdminDeleteUserResponse> DeleteUserAsync(string email)
         {
             return await _providerClient.AdminDeleteUserAsync(new AdminDeleteUserRequest
@@ -61,6 +83,11 @@ namespace Clouds.Net.AWS.Helpers
             });
         }
 
+        /// <summary>
+        /// Asynchronously deletes a user based on their email address.
+        /// </summary>
+        /// <param name="email">The email address of the user to delete.</param>
+        /// <returns>A task that represents the asynchronous operation and returns the delete response.</returns>
         public async Task<GetUserResponse> GetUserAsync(string accessToken)
         {
             return await _providerClient.GetUserAsync(new GetUserRequest
@@ -69,6 +96,12 @@ namespace Clouds.Net.AWS.Helpers
             });
         }
 
+        /// <summary>
+        /// Asynchronously initiates an authentication session using an email and password.
+        /// </summary>
+        /// <param name="email">The email of the user attempting authentication.</param>
+        /// <param name="password">The password of the user.</param>
+        /// <returns>A task that represents the asynchronous operation and returns the authentication response.</returns>
         public async Task<InitiateAuthResponse> InitiateAuthAsync(string email, string password)
         {
             return await _providerClient.InitiateAuthAsync(new InitiateAuthRequest
@@ -84,6 +117,13 @@ namespace Clouds.Net.AWS.Helpers
             });
         }
 
+        /// <summary>
+        /// Asynchronously registers a new user with a username, password, and a list of additional attributes.
+        /// </summary>
+        /// <param name="username">The username of the new user.</param>
+        /// <param name="password">The password of the new user.</param>
+        /// <param name="attributes">A list of additional user attributes.</param>
+        /// <returns>A task that represents the asynchronous operation and returns the sign-up response.</returns>
         public async Task<SignUpResponse> SignUpAsync(string username, string password, List<AttributeType> attributes)
         {
             return await _providerClient.SignUpAsync(new SignUpRequest
@@ -96,6 +136,11 @@ namespace Clouds.Net.AWS.Helpers
             });
         }
 
+        /// <summary>
+        /// Retrieves the subject identifier (Sub ID) associated with a given access token.
+        /// </summary>
+        /// <param name="accessToken">The access token of the user.</param>
+        /// <returns>The Sub ID of the user, or an empty string if not found.</returns>
         public string GetSubIdByAccessToken(string accessToken)
         {
             var jsonToken = new JwtSecurityTokenHandler()
@@ -104,6 +149,11 @@ namespace Clouds.Net.AWS.Helpers
                 .FirstOrDefault(claim => claim.Type == "sub")?.Value ?? string.Empty;
         }
 
+        /// <summary>
+        /// Asynchronously retrieves the role of a user using their access token.
+        /// </summary>
+        /// <param name="accessToken">The access token of the user.</param>
+        /// <returns>A task that represents the asynchronous operation and returns the user's role, or an empty string if not found.</returns>
         public async Task<string> GetUserRoleAsync(string accessToken)
         {
             try

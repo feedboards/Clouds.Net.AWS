@@ -11,6 +11,12 @@ namespace Clouds.Net.AWS.Helpers
         private readonly AmazonSimpleEmailServiceClient _client;
         private readonly string _sourceMail;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SESHelper"/> class with AWS credentials and a source email address, using the default AWS region.
+        /// </summary>
+        /// <param name="accessKey">The AWS access key.</param>
+        /// <param name="secretKey">The AWS secret key.</param>
+        /// <param name="sourceMail">The default sender email address for outgoing emails.</param>
         public SESHelper(
             string accessKey,
             string secretKey,
@@ -23,6 +29,13 @@ namespace Clouds.Net.AWS.Helpers
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SESHelper"/> class with AWS credentials, a source email address, and a specified AWS region.
+        /// </summary>
+        /// <param name="accessKey">The AWS access key.</param>
+        /// <param name="secretKey">The AWS secret key.</param>
+        /// <param name="sourceMail">The default sender email address for outgoing emails.</param>
+        /// <param name="region">The AWS region where SES is configured.</param>
         public SESHelper(
             string accessKey,
             string secretKey,
@@ -37,11 +50,22 @@ namespace Clouds.Net.AWS.Helpers
             _sourceMail = sourceMail;
         }
 
+        /// <summary>
+        /// Asynchronously sends an email using the details specified in the <see cref="SESRequestDto"/> object.
+        /// </summary>
+        /// <param name="obj">The email request object containing recipient, subject, and body details.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result is <c>true</c> if the email is sent successfully; otherwise, <c>false</c>.</returns>
         public async Task<bool> SendMail(SESRequestDto obj)
         {
             return await SendMail(obj, _sourceMail);
         }
 
+        /// <summary>
+        /// Asynchronously sends an email using the details specified in the <see cref="SESRequestDto"/> object and allows specifying a source email address.
+        /// </summary>
+        /// <param name="obj">The email request object containing recipient, subject, and body details.</param>
+        /// <param name="sourceMail">The sender's email address.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result is <c>true</c> if the email is sent successfully; otherwise, <c>false</c>.</returns>
         public async Task<bool> SendMail(SESRequestDto obj, string sourceMail)
         {
             try

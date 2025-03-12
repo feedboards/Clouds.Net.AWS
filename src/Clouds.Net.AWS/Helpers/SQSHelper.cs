@@ -11,6 +11,13 @@ namespace Clouds.Net.AWS.Helpers
         private readonly AmazonSQSClient _client;
         private readonly string _queueUrl;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SQSHelper"/> class with specified AWS credentials, region, and queue URL.
+        /// </summary>
+        /// <param name="accessKey">The AWS access key.</param>
+        /// <param name="secretKey">The AWS secret key.</param>
+        /// <param name="region">The AWS region where the SQS queue is located.</param>
+        /// <param name="queueUrl">The URL of the SQS queue.</param>
         public SQSHelper(
             string accessKey,
             string secretKey,
@@ -25,6 +32,12 @@ namespace Clouds.Net.AWS.Helpers
             _queueUrl = queueUrl;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SQSHelper"/> class with specified AWS credentials and queue URL, using the default AWS region.
+        /// </summary>
+        /// <param name="accessKey">The AWS access key.</param>
+        /// <param name="secretKey">The AWS secret key.</param>
+        /// <param name="queueUrl">The URL of the SQS queue.</param>
         public SQSHelper(
             string accessKey,
             string secretKey,
@@ -37,11 +50,22 @@ namespace Clouds.Net.AWS.Helpers
         {
         }
 
+        /// <summary>
+        /// Asynchronously waits for and retrieves new messages of type <typeparamref name="T"/> from the default queue.
+        /// </summary>
+        /// <typeparam name="T">The type of the messages to retrieve.</typeparam>
+        /// <returns>A task representing the asynchronous operation that returns a list of deserialized messages.</returns>
         public async Task<List<T?>> WaitForNewMessages<T>()
         {
             return await WaitForNewMessages<T>(_queueUrl);
         }
 
+        /// <summary>
+        /// Asynchronously waits for and retrieves new messages of type <typeparamref name="T"/> from the specified queue URL.
+        /// </summary>
+        /// <typeparam name="T">The type of the messages to retrieve.</typeparam>
+        /// <param name="queueUrl">The URL of the SQS queue.</param>
+        /// <returns>A task representing the asynchronous operation that returns a list of deserialized messages.</returns>
         public async Task<List<T?>> WaitForNewMessages<T>(string queueUrl)
         {
             var messages = await _client.ReceiveMessageAsync(new ReceiveMessageRequest
@@ -53,11 +77,24 @@ namespace Clouds.Net.AWS.Helpers
             return messages.Messages.ConvertAll(message => JsonConvert.DeserializeObject<T>(message.Body));
         }
 
+        /// <summary>
+        /// Asynchronously waits for and retrieves new messages of type <typeparamref name="T"/> from the default queue with a specified wait time.
+        /// </summary>
+        /// <typeparam name="T">The type of the messages to retrieve.</typeparam>
+        /// <param name="waitTimeSeconds">The time to wait for new messages in seconds.</param>
+        /// <returns>A task representing the asynchronous operation that returns a list of deserialized messages.</returns>
         public async Task<List<T?>> WaitForNewMessages<T>(int waitTimeSeconds)
         {
             return await WaitForNewMessages<T>(waitTimeSeconds, _queueUrl);
         }
 
+        /// <summary>
+        /// Asynchronously waits for and retrieves multiple new messages of type <typeparamref name="T"/> from the specified queue with a specified wait time.
+        /// </summary>
+        /// <typeparam name="T">The type of the messages to retrieve.</typeparam>
+        /// <param name="waitTimeSeconds">The time to wait for new messages in seconds.</param>
+        /// <param name="queueUrl">The URL of the SQS queue.</param>
+        /// <returns>A task representing the asynchronous operation that returns a list of deserialized messages.</returns>
         public async Task<List<T?>> WaitForNewMessages<T>(int waitTimeSeconds, string queueUrl)
         {
             var messages = await _client.ReceiveMessageAsync(new ReceiveMessageRequest
@@ -69,11 +106,22 @@ namespace Clouds.Net.AWS.Helpers
             return messages.Messages.ConvertAll(message => JsonConvert.DeserializeObject<T>(message.Body));
         }
 
+        /// <summary>
+        /// Asynchronously waits for and retrieves a single new message of type <typeparamref name="T"/> from the default queue.
+        /// </summary>
+        /// <typeparam name="T">The type of the message to retrieve.</typeparam>
+        /// <returns>A task representing the asynchronous operation that returns a single deserialized message or null if none are available.</returns>
         public async Task<T?> WaitForNewMessage<T>()
         {
             return await WaitForNewMessage<T>(_queueUrl);
         }
 
+        /// <summary>
+        /// Asynchronously waits for and retrieves a single new message of type <typeparamref name="T"/> from the specified queue URL.
+        /// </summary>
+        /// <typeparam name="T">The type of the message to retrieve.</typeparam>
+        /// <param name="queueUrl">The URL of the SQS queue.</param>
+        /// <returns>A task representing the asynchronous operation that returns a single deserialized message or null if none are available.</returns>
         public async Task<T?> WaitForNewMessage<T>(string queueUrl)
         {
             var response = await _client.ReceiveMessageAsync(new ReceiveMessageRequest
@@ -88,11 +136,24 @@ namespace Clouds.Net.AWS.Helpers
             return message;
         }
 
+        /// <summary>
+        /// Asynchronously waits for and retrieves a single new message of type <typeparamref name="T"/> from the default queue with a specified wait time.
+        /// </summary>
+        /// <typeparam name="T">The type of the message to retrieve.</typeparam>
+        /// <param name="waitTimeSeconds">The time to wait for a new message in seconds.</param>
+        /// <returns>A task representing the asynchronous operation that returns a single deserialized message or null if none are available.</returns>
         public async Task<T?> WaitForNewMessage<T>(int waitTimeSeconds)
         {
             return await WaitForNewMessage<T>(waitTimeSeconds, _queueUrl);
         }
 
+        /// <summary>
+        /// Asynchronously waits for and retrieves a single new message of type <typeparamref name="T"/> from the specified queue with a specified wait time.
+        /// </summary>
+        /// <typeparam name="T">The type of the message to retrieve.</typeparam>
+        /// <param name="waitTimeSeconds">The time to wait for a new message in seconds.</param>
+        /// <param name="queueUrl">The URL of the SQS queue.</param>
+        /// <returns>A task representing the asynchronous operation that returns a single deserialized message or null if none are available.</returns>
         public async Task<T?> WaitForNewMessage<T>(int waitTimeSeconds, string queueUrl)
         {
             var response = await _client.ReceiveMessageAsync(new ReceiveMessageRequest
@@ -107,11 +168,20 @@ namespace Clouds.Net.AWS.Helpers
             return message;
         }
 
+        /// <summary>
+        /// Asynchronously deletes a list of messages from the default queue.
+        /// </summary>
+        /// <param name="messages">The list of messages to delete.</param>
         public async Task DeleteMessages(List<Message> messages)
         {
             await DeleteMessages(messages, _queueUrl);
         }
 
+        /// <summary>
+        /// Asynchronously deletes a list of messages from the specified queue.
+        /// </summary>
+        /// <param name="messages">The list of messages to delete.</param>
+        /// <param name="queueUrl">The URL of the SQS queue.</param>
         public async Task DeleteMessages(List<Message> messages, string queueUrl)
         {
             var deleteTasks = new List<Task>();
@@ -128,11 +198,20 @@ namespace Clouds.Net.AWS.Helpers
             await Task.WhenAll(deleteTasks);
         }
 
+        /// <summary>
+        /// Asynchronously deletes a single message from the default queue.
+        /// </summary>
+        /// <param name="message">The message to delete.</param>
         public async Task DeleteMessage(Message message)
         {
             await DeleteMessage(message, _queueUrl);
         }
 
+        /// <summary>
+        /// Asynchronously deletes a single message from the specified queue.
+        /// </summary>
+        /// <param name="message">The message to delete.</param>
+        /// <param name="queueUrl">The URL of the SQS queue.</param>
         public async Task DeleteMessage(Message message, string queueUrl)
         {
             await _client.DeleteMessageAsync(new DeleteMessageRequest
@@ -142,11 +221,24 @@ namespace Clouds.Net.AWS.Helpers
             });
         }
 
+        /// <summary>
+        /// Asynchronously adds multiple new messages of type <typeparamref name="T"/> to the default queue.
+        /// </summary>
+        /// <typeparam name="T">The type of the messages to add.</typeparam>
+        /// <param name="messages">The list of messages to add.</param>
+        /// <returns>A task representing the asynchronous operation that returns the list of added messages.</returns>
         public async Task<List<T>> AddNewMessages<T>(List<T> messages) where T : notnull
         {
             return await AddNewMessages(messages, _queueUrl);
         }
 
+        /// <summary>
+        /// Asynchronously adds multiple new messages of type <typeparamref name="T"/> to the specified queue.
+        /// </summary>
+        /// <typeparam name="T">The type of the messages to add.</typeparam>
+        /// <param name="messages">The list of messages to add.</param>
+        /// <param name="queueUrl">The URL of the SQS queue.</param>
+        /// <returns>A task representing the asynchronous operation that returns the list of added messages.</returns>
         public async Task<List<T>> AddNewMessages<T>(List<T> messages, string queueUrl) where T : notnull
         {
             var tasks = new List<Task>();
@@ -160,11 +252,24 @@ namespace Clouds.Net.AWS.Helpers
             return messages;
         }
 
+        /// <summary>
+        /// Asynchronously adds a new message of type <typeparamref name="T"/> to the default queue.
+        /// </summary>
+        /// <typeparam name="T">The type of the message to add.</typeparam>
+        /// <param name="message">The message to add.</param>
+        /// <returns>A task representing the asynchronous operation that returns the added message.</returns>
         public async Task<T> AddNewMessage<T>(T message) where T : notnull
         {
             return await AddNewMessage(message, _queueUrl);
         }
 
+        /// <summary>
+        /// Asynchronously adds a new message of type <typeparamref name="T"/> to the specified queue.
+        /// </summary>
+        /// <typeparam name="T">The type of the message to add.</typeparam>
+        /// <param name="message">The message to add.</param>
+        /// <param name="queueUrl">The URL of the SQS queue.</param>
+        /// <returns>A task representing the asynchronous operation that returns the added message.</returns>
         public async Task<T> AddNewMessage<T>(T message, string queueUrl) where T : notnull
         {
             var serializeMessage = JsonConvert.SerializeObject(message);
